@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react';
 import {
     View,
     ViewPropTypes,
     TouchableOpacity,
     StyleSheet,
     Text
-} from 'react-native'
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 const handleTabPress = (index, multiple, selectedIndex, onTabPress) => {
@@ -18,7 +18,7 @@ const handleTabPress = (index, multiple, selectedIndex, onTabPress) => {
 };
 
 const TabOption = ({
-    isTabActive, index, badge, text,
+    isTabActive, index, badge, item,
     firstTabStyle, lastTabStyle,
     tabStyle, activeTabStyle,
     tabTextStyle, activeTabTextStyle,
@@ -26,6 +26,7 @@ const TabOption = ({
     tabBadgeStyle, activeTabBadgeStyle,
     onTabPress,
 }) => {
+
     return (
         <TouchableOpacity style={[
             styles.tabStyle,
@@ -35,14 +36,15 @@ const TabOption = ({
             lastTabStyle]}
             onPress={() => onTabPress(index)}
             activeOpacity={1}>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flex: 1, flexDirection: "row", alignItems: 'center' }}>
+                {item.icon && item.icon()}
                 <Text style={[
                     styles.tabTextStyle,
                     tabTextStyle,
                     isTabActive ? [styles.activeTabTextStyle, activeTabTextStyle] : {}]}
                     numberOfLines={1}
                     ellipsizeMode="tail">
-                    {text}
+                    {item.title}
                 </Text>
                 {
                     badge ?
@@ -88,11 +90,11 @@ const SegmentedControlTab = ({
                             index={index}
                             badge={badges && badges[index] ? badges[index] : false}
                             isTabActive={multiple ? selectedIndices.includes(index) : selectedIndex === index}
-                            text={item}
+                            item={item}
                             onTabPress={(index) => handleTabPress(index, multiple, selectedIndex, onTabPress)}
                             firstTabStyle={index === 0 ? [firstTabStyle] : {}}
                             lastTabStyle={index === values.length - 1 ? [lastTabStyle] : {}}
-                            tabStyle={[tabStyle, index !== 0 && index !== values.length - 1 ? { marginLeft: -1 } : {}]}
+                            tabStyle={[tabStyle, index !== 0 && index !== values.length - 1 ? {} : {}]}
                             activeTabStyle={activeTabStyle}
                             tabTextStyle={tabTextStyle}
                             activeTabTextStyle={activeTabTextStyle}
@@ -108,7 +110,7 @@ const SegmentedControlTab = ({
 };
 
 SegmentedControlTab.propTypes = {
-    values: PropTypes.array,
+    values: PropTypes.arrayOf(PropTypes.shape({title: PropTypes.string.isRequired, icon: PropTypes.func})),
     badges: PropTypes.array,
     multiple: PropTypes.bool,
     onTabPress: PropTypes.func,
@@ -127,7 +129,7 @@ SegmentedControlTab.propTypes = {
 }
 
 SegmentedControlTab.defaultProps = {
-    values: ['One', 'Two', 'Three'],
+    values: [{title: 'One'}, {title: 'Two'}, {title: 'Three'}],
     badges: ['', '', ''],
     multiple: false,
     selectedIndex: 0,
@@ -151,12 +153,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     tabStyle: {
-        paddingVertical: 5,
+        paddingLeft: 12,
+        paddingRight: 12,
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         borderColor: '#0076FF',
-        borderWidth: 1,
         backgroundColor: 'white',
     },
     activeTabStyle: {
