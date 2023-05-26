@@ -49,7 +49,7 @@ class ConsumerComponent extends Component {
         return (
             <View>
                 <SegmentedControlTab
-                    values={['First', 'Second', 'Third']}
+                    values={[{title: 'First'}, {title: 'Second'}, {title: 'Third'}]}
                     selectedIndex={this.state.selectedIndex}
                     onTabPress={this.handleIndexChange}
                     />
@@ -61,7 +61,7 @@ class ConsumerComponent extends Component {
 ## Props
  Name | Description | Default | Type
 ------|-------------|----------|-----------
-values | titles of tabs  | `['One', 'Two', 'Three']` | array
+values | titles of tabs  | `[{title: 'First'}, {title: 'Second'}, {title: 'Third'}]` | array
 selectedIndex | index of tab item to be selected initially| [0] | number
 selectedIndices |Array of indices of tab items to be selected initially - when multiple prop is true else it will take selectedIndex| [0] | arrayOf(PropTypes.number)
 multiple | Boolean which enables the multiple selection option | false | bool
@@ -86,7 +86,7 @@ onTabPress | call-back function when a tab is selected | () => {} | func
           activeTabStyle={styles.activeTabStyle}
           activeTabTextStyle={styles.activeTabTextStyle}
           selectedIndex={1}
-          values={['First', 'Second', 'Third']}
+          values={[{title: 'First'}, {title: 'Second'}, {title: 'Third'}]}
           onPress= {index => this.setState({selected:index})}
           />
 
